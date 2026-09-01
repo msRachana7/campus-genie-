@@ -6,9 +6,12 @@ from routes.resources import router as resources_router
 from fastapi.middleware.cors import CORSMiddleware
 from routes.genie import router as genie_router
 from archive import router as archive_router
+from home_dashboard import router as home_router
+from archive import router as archive_router
 
 app = FastAPI(title="Campus Genie Backend")
 app.include_router(archive_router)
+app.include_router(home_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

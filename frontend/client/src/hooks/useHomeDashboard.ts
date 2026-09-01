@@ -3,6 +3,7 @@ import { accessToken, authFetch } from "../lib/campusAuth";
 import { toast } from "sonner";
 
 export type HomePost = {
+  content_source?: string; type?: string;
   id: string; initials: string; name: string; meta: string; color: string;
   title: string; body: string; tags: string[]; skills_required: string[];
   deadline: string | null; interested: boolean; matches_you: boolean;

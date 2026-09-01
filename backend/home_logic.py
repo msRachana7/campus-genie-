@@ -207,6 +207,7 @@ def post_payload(row, authors, saved, profile):
     deadline, _ = parse_moment(row.get("deadline"))
     key = content_key(row)
     return {"id": key, "initials": "".join(word[0] for word in name.split()[:2]).upper(),
+            "content_source": str(row.get("content_source") or ""), "type": str(row.get("type") or ""),
             "name": name, "meta": " · ".join(meta), "color": "sage", "title": str(row.get("title") or "Campus post"),
             "body": str(row.get("body") or ""), "tags": text_list(row.get("tags")),
             "skills_required": text_list(row.get("skills_required")),

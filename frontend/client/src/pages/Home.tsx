@@ -5,7 +5,8 @@ import CampusLogin from "../components/CampusLogin";
 import ConnectedGenieView from "../components/GenieView";
 import { useGenieChat } from "../hooks/useGenieChat";
 import { useHomeDashboard } from "../hooks/useHomeDashboard";
-import LiveHomeView, { LiveCommunityView, LivePulseView } from "../components/LiveHomeView";
+import LiveHomeView from "../components/LiveHomeView";
+import { RestoredCommunityView, RestoredPulseView, ConnectedArchiveView } from "../components/RestoredCampusViews";
 import {
   Archive, ArrowLeft, ArrowUpRight, Bell, BookOpen, Bot, CalendarDays, ChevronRight,
   CircleHelp, Compass, Download, Flame, GraduationCap, Hash, Heart, History, LayoutGrid,
@@ -72,6 +73,7 @@ export default function Home() {
   const [showComposer, setShowComposer] = useState(false);
   const [showResourceUpload, setShowResourceUpload] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
+  const [communityFilter, setCommunityFilter] = useState("For you");
 
   const getStudentId = () => {
     const user = currentUser();
@@ -331,7 +333,7 @@ return (
           )}
 
           {activeTab === "community" && (
-            <LiveCommunityView home={home} />
+            <RestoredCommunityView home={home} filter={communityFilter} setFilter={setCommunityFilter} onCreatePost={() => setShowComposer(true)} />
           )}
 
           {activeTab === "genie" && (
@@ -347,11 +349,11 @@ return (
           )}
 
           {activeTab === "pulse" && (
-            <LivePulseView home={home} />
+            <RestoredPulseView home={home} onCommunity={(filter) => { setCommunityFilter(filter); navigateToTab("community"); }} />
           )}
 
           {activeTab === "history" && (
-            <HistoryView setActiveTab={setActiveTab} />
+            <ConnectedArchiveView ask={ask} />
           )}
         </>
       )}
@@ -517,8 +519,6 @@ function EditProfileView({
 
 function ResourcesView({ setActiveTab, onUploadResource }: { setActiveTab: (id: string) => void; onUploadResource: () => void }) { const [resourceQuery, setResourceQuery] = useState(""); const [isStudyStack, setIsStudyStack] = useState(false); const [yearFilter, setYearFilter] = useState("All years"); const [typeFilter, setTypeFilter] = useState("All types"); const filteredResources = resources.filter((resource) => { const searchable = `${ resource.subject } ${ resource.title } ${ resource.meta }`.toLowerCase(); const matchesQuery = searchable.includes(resourceQuery.toLowerCase().trim()); const matchesYear = yearFilter === "All years" || resource.year === yearFilter; const matchesType = typeFilter === "All types" || resource.type === typeFilter; return matchesQuery && matchesYear && matchesType; }); return <div className="page-content"><PageTitle kicker="KNOWLEDGE LIBRARY" title="Notes, PYQs, and the good stuff." description="A browsable shelf for the things that help you learn faster — and ask better questions." action="Upload a resource" onAction={onUploadResource} />{isStudyStack && <button className="profile-back resource-stack-back" onClick={() => { setIsStudyStack(false); setTypeFilter("All types"); }}><ArrowLeft size={16} /> Back to all Notes & PYQs</button>}<div className="resource-toolbar"><div className="search-field"><Search size={17} /><input value={resourceQuery} onChange={(e) => setResourceQuery(e.target.value)} placeholder="Search subjects, units, or keywords..." /></div><label className="filter-control"><span>Year of study</span><select value={yearFilter} onChange={(e) => setYearFilter(e.target.value)}><option>All years</option><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option></select></label><label className="filter-control"><span>Type</span><select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}><option>All types</option><option>PYQ</option><option>NOTES</option></select></label></div><div className="resource-feature"><div><span className="section-kicker">GENIE'S PICK FOR YOU</span><h2>A study stack worth keeping close.</h2><p>Based on what you’ve saved and your Year of study roadmap.</p><button className="primary-button" onClick={() => { setTypeFilter("PYQ"); setIsStudyStack(true); toast("Study stack opened with PYQs."); }}><Play size={15} /> Open study stack</button></div><div className="resource-feature-art"><img src="/manus-storage/campus-genie-notes-visual_d047909b.png" alt="Open notebooks and study papers on a warm campus desk" /><span className="art-label">NOTES · PYQs · SHARED</span></div></div><div className="resource-grid">{filteredResources.map((resource) => <div className="resource-card" key={resource.title}><div className={`resource-badge ${resource.tone}`}>{resource.type}</div><span className="resource-subject">{resource.subject}</span><h3>{resource.title}</h3><span className="resource-meta">{resource.meta}</span><div className="resource-footer"><button onClick={() => toast(`${resource.title} saved to your shelf.`)}><Download size={15} /> Save</button><button className="ask-small" onClick={() => setActiveTab("genie")}><Sparkles size={14} /> Ask Genie</button></div></div>) }</div ></div > }
 
-function HistoryView({ setActiveTab }: { setActiveTab: (id: string) => void }) { const [activeYear, setActiveYear] = useState("2023"); return <div className="page-content history-page"><div className="history-hero"><div className="history-copy"><span className="section-kicker">TIME CAPSULE · BMSCE ARCHIVES</span><h1>Campus has a<br /><em>long memory.</em></h1><p>Ask how the culture evolved. Explore old events, alumni paths, and the ideas that were already in the air three years ago.</p><button className="primary-button" onClick={() => setActiveTab("genie")}><History size={15} /> Explore with Genie <ArrowUpRight size={15} /></button></div><div className="history-stamp">EST.<br /><b>1946</b><span>BENGALURU</span></div></div><div className="history-controls"><div><span className="section-kicker">BROWSE THE YEARS</span><h2>Choose a thread to follow</h2></div><div className="year-pills">{["2026", "2024", "2023", "2020", "2016"].map((year) => <button key={year} className={activeYear === year ? "active" : ""} onClick={() => { setActiveYear(year); toast(`Archive thread switched to ${year}.`); }}>{year}</button>)}</div></div><div className="history-grid"><div className="history-story story-large"><div className="story-image image-campus" /><div className="story-copy"><span className="section-kicker">CAMPUS LIFE · 2023</span><h3>When the quad became a stage.</h3><p>From club showcases to late-evening rehearsals, a snapshot of the moments students made between classes.</p><button onClick={() => toast(`Opening the ${activeYear} archive memory.`)}>Open memory <ArrowUpRight size={14} /></button></div></div><div className="history-story"><div className="story-image image-hack" /><div className="story-copy"><span className="section-kicker">HACKATHONS · 2023</span><h3>Before the pitch decks.</h3><button onClick={() => toast(`Opening the ${activeYear} archive memory.`)}>Open memory <ArrowUpRight size={14} /></button></div></div > <div className="history-story note-story"><div className="note-pin">✦</div><span className="section-kicker">ASK THE ARCHIVE</span><h3>“What did students care about back then?”</h3><button onClick={() => setActiveTab("genie")}>Ask Genie <ArrowUpRight size={14} /></button></div></div > <div className="source-note">Archive inspiration: public campus-life references from <a href="https://bmsce.ac.in/home/Life-at-BMSCE" target="_blank" rel="noreferrer">BMSCE Life at BMSCE</a>.</div></div > }
-
 function PageTitle({ kicker, title, description, action, onAction }: { kicker: string; title: string; description: string; action?: string; onAction?: () => void }) { return <div className="page-title"><div><span className="section-kicker">{kicker}</span><h1>{title}</h1><p>{description}</p></div>{action && <button className="primary-button" onClick={onAction}><Plus size={15} /> {action}</button>}</div> }
 
 
@@ -590,8 +590,6 @@ function ResourceUploadView({ onBack }: { onBack: () => void }) {
     const payload = new FormData();
    const signedInUser = currentUser();
 
-    console.log("SIGNED IN USER:", signedInUser);
-    console.log("ACCESS TOKEN:", accessToken());
 
     if (!accessToken()) {
       setUploadStatus({
@@ -621,9 +619,6 @@ function ResourceUploadView({ onBack }: { onBack: () => void }) {
     setIsUploading(true);
     try {
       const backendUrl = (import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000").replace(/\/$/, "");
-      console.log("UPLOAD EMAIL:", signedInUser.email);
-      console.log("UPLOAD FILE:", file.name);
-      console.log("API URL:", backendUrl);
 
       const response = await fetch(`${backendUrl}/api/resources/upload`, {
         method: "POST", body: payload,
