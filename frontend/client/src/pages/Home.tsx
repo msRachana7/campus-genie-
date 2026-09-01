@@ -1,10 +1,11 @@
-// CAMPUS_GENIE_EMAIL_AUTH_V2 - verified replacement for pages/Home.tsx
 /* Orchard Commons: warm editorial campus bulletin board with tactile cards, asymmetric discovery, and warm intelligence. */
 import { useEffect, useMemo, useState } from "react";
 import { authFetch as apiFetch, accessToken, AUTH_EVENT, clearSession, currentUser, saveSession } from "../lib/campusAuth";
 import CampusLogin from "../components/CampusLogin";
 import ConnectedGenieView from "../components/GenieView";
 import { useGenieChat } from "../hooks/useGenieChat";
+import { useHomeDashboard } from "../hooks/useHomeDashboard";
+import LiveHomeView, { LiveCommunityView, LivePulseView } from "../components/LiveHomeView";
 import {
   Archive, ArrowLeft, ArrowUpRight, Bell, BookOpen, Bot, CalendarDays, ChevronRight,
   CircleHelp, Compass, Download, Flame, GraduationCap, Hash, Heart, History, LayoutGrid,
@@ -20,11 +21,6 @@ const tabs = [
   { id: "genie", label: "Ask Genie", icon: Bot },
   { id: "pulse", label: "Campus Pulse", icon: Zap },
   { id: "history", label: "Time Capsule", icon: History },
-];
-
-const posts = [
-  { initials: "AK", color: "coral", name: "Aarav Kumar", meta: "CSE · 2nd year · 18 min ago", title: "Need a Python + DSA teammate for our climate hackathon crew", body: "We have the idea + backend sorted. Looking for someone comfortable with Python and DSA who can join us this Saturday.", tags: ["Hackathon", "2 teammates"], skills_required: ["Python", "DSA"], deadline: "2026-09-15" },
-  { initials: "NS", color: "sky", name: "Nandini Shah", meta: "IEEE BMSCE · 1 hr ago", title: "Phase Shift is looking for volunteers", body: "Help us make the main quad come alive. Photography, stage, design, or just good energy — there is a place for you.", tags: ["Club activity", "This week"], skills_required: [], deadline: "2026-09-08" },
 ];
 
 const resources = [
@@ -67,6 +63,7 @@ const INTEREST_OPTIONS = [
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
+  const home = useHomeDashboard(isLoggedIn);
   const [showProfile, setShowProfile] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [profileLoading, setProfileLoading] = useState(false);
@@ -122,7 +119,6 @@ const navigateToTab = (id: string) => {
   setShowResourceUpload(false);
 };
 const { chat, query, setQuery, sendQuestion, isLoading, error: chatError, resetChat } = useGenieChat();
-const [interested, setInterested] = useState<number[]>([]);
 const active = useMemo(() => tabs.find((tab) => tab.id === activeTab) ?? tabs[0], [activeTab]);
 
 useEffect(() => {
@@ -239,7 +235,7 @@ return (
         </div>
 
         <div className="crumb">
-          <span>Monday, 28 August</span>
+          <span>{home.clock.date}</span>
           <span className="crumb-dot">·</span>
           <b>{active.label}</b>
         </div>
@@ -254,9 +250,9 @@ return (
           </button>
 
           <button
-            className="icon-button has-alert"
+            className="icon-button"
             onClick={() =>
-              toast("You're all caught up - no new campus signals.")
+              navigateToTab("community")
             }
             aria-label="Show notifications"
           >
@@ -271,7 +267,7 @@ return (
             }}
             aria-label="Open profile"
           >
-            {(profile?.name || "P").charAt(0).toUpperCase()}
+            {(profile?.name || home.data?.first_name || "U").charAt(0).toUpperCase()}
           </button>
         </div>
       </header>
@@ -299,6 +295,7 @@ return (
           }}
           onSaved={(updated) => {
             setProfile(updated);
+            home.refresh();
             setShowProfileEdit(false);
             setShowProfile(true);
           }}
@@ -323,12 +320,7 @@ return (
       ) : (
         <>
           {activeTab === "home" && (
-            <HomeView
-              setActiveTab={setActiveTab}
-              interested={interested}
-              setInterested={setInterested}
-              ask={ask}
-            />
+            <LiveHomeView home={home} name={profile?.name} setActiveTab={navigateToTab} ask={ask} />
           )}
 
           {activeTab === "resources" && (
@@ -339,12 +331,7 @@ return (
           )}
 
           {activeTab === "community" && (
-            <CommunityView
-              setActiveTab={setActiveTab}
-              interested={interested}
-              setInterested={setInterested}
-              onCreatePost={() => setShowComposer(true)}
-            />
+            <LiveCommunityView home={home} />
           )}
 
           {activeTab === "genie" && (
@@ -360,7 +347,7 @@ return (
           )}
 
           {activeTab === "pulse" && (
-            <PulseView onCommunity={() => setActiveTab("community")} />
+            <LivePulseView home={home} />
           )}
 
           {activeTab === "history" && (
@@ -528,55 +515,7 @@ function EditProfileView({
   </div>;
 }
 
-function HomeView({ setActiveTab, interested, setInterested, ask }: { setActiveTab: (id: string) => void; interested: number[]; setInterested: (items: number[]) => void; ask: (text: string) => void }) {
-  return <div className="page-content page-home">
-    <section className="welcome-row">
-      <div className="welcome-copy"><div className="eyebrow"><span className="eyebrow-pin">✦</span> MONDAY MORNING, PRIYA</div><h1>Hi Priya<span className="title-period">.</span><br /><em>Your campus has a lot<br className="desktop-only" /> going on.</em></h1><p className="lede">Let’s make it findable. Ask about the fest, the syllabus, or the friend you haven’t met yet.</p><div className="welcome-actions"><button className="primary-button" onClick={() => setActiveTab("genie")}><Sparkles size={16} /> Ask Genie <ArrowUpRight size={15} /></button><button className="ghost-button" onClick={() => setActiveTab("community")}>See what’s moving <ChevronRight size={15} /></button></div></div>
-      <div className="genie-card"><div className="genie-halo" /><img src="/manus-storage/campus-genie-orb_df60dbe3.png" alt="Campus Genie mascot" /><div className="genie-note"><span className="live-dot" /> <b>Genie is listening</b><small>3 new leads for you</small></div></div>
-      <div className="weather-card"><span className="weather-icon">☼</span><div><b>27°</b><span>Bright over Basavanagudi</span></div></div>
-    </section>
-
-    <button className="pulse-spotlight" onClick={() => setActiveTab("pulse")}><div className="spotlight-copy"><div className="spotlight-label"><span className="eyebrow-pin">✦</span><span className="live-dot" /> CAMPUS PULSE · LIVE NOW</div><h2>Campus is feeling <em>curious.</em></h2><p>AI events, club meetups, and “how do I join?” conversations are up this week.</p><span className="spotlight-cta">Open the live vibe map <ArrowUpRight size={15} /></span></div><div className="spotlight-orbit"><span className="orbit-pulse pulse-a" /><span className="orbit-pulse pulse-b" /><b>72</b><small>mood index</small></div><div className="spotlight-stamp">AGGREGATED<br /><b>NO NAMES</b></div></button>
-
-    <div className="section-heading"><div><span className="section-kicker">YOUR SHORTCUTS</span><h2>Pick up where you left off</h2></div><button className="text-button" onClick={() => setActiveTab("resources")}>Open library <ArrowUpRight size={14} /></button></div>
-    <section className="shortcut-grid">
-      <button className="shortcut-card shortcut-yellow" onClick={() => setActiveTab("resources")}><div className="card-icon"><BookOpen size={19} /></div><div><b>Notes & PYQs</b><span>126 resources, sorted for you</span></div><ChevronRight size={18} /></button>
-      <button className="shortcut-card shortcut-lilac" onClick={() => setActiveTab("community")}><div className="card-icon"><UsersRound size={19} /></div><div><b>Find your people</b><span>8 posts match your interests</span></div><ChevronRight size={18} /></button>
-      <button className="shortcut-card shortcut-sage" onClick={() => setActiveTab("pulse")}><div className="card-icon"><Zap size={19} /></div><div><b>Campus Pulse</b><span>AI events are trending ↑</span></div><ChevronRight size={18} /></button>
-    </section>
-
-    <div className="content-columns">
-      <section className="feed-column"><div className="section-heading compact"><div><span className="section-kicker">FROM THE QUAD</span><h2>Worth knowing today</h2></div><button className="round-plus" onClick={() => setActiveTab("community")}><Plus size={17} /></button></div>
-        {posts.map((post, index) => <PostCard key={post.name} post={post} index={index} interested={interested} setInterested={setInterested} />)}
-        <button className="load-more" onClick={() => setActiveTab("community")}>View the whole community <ArrowUpRight size={14} /></button>
-      </section>
-      <aside className="insight-column"><div className="section-heading compact"><div><span className="section-kicker">A LITTLE SIGNAL</span><h2>Campus, right now</h2></div></div><div className="pulse-card"><div className="pulse-card-top"><div className="signal-icon"><Zap size={17} /></div><span className="live-label"><i className="live-dot" /> LIVE</span></div><h3>AI events are<br /><span>trending this week.</span></h3><p>More students are bookmarking workshops, hackathons, and project calls than usual.</p><div className="tiny-bars">{[28, 38, 34, 52, 44, 69, 58, 82, 72, 94].map((height, i) => <i key={i} style={{ height: `${height}%` }} />)}</div><button onClick={() => setActiveTab("pulse")}>Explore the pulse <ArrowUpRight size={14} /></button></div><div className="upcoming-card"><div className="upcoming-date"><b>06</b><span>SEP</span></div><div><span className="section-kicker">UP NEXT</span><b>Databricks Data + AI meetup</b><small>Innovation Lab · 4:30 PM</small></div><CalendarDays size={18} /></div><div className="archive-teaser" onClick={() => setActiveTab("history")}><div className="archive-image" /><div><span className="section-kicker">FROM THE ARCHIVE</span><b>What did hackathons look like in 2023?</b><span>Take a little time trip <ArrowUpRight size={13} /></span></div></div></aside>
-    </div>
-    <div className="privacy-note"><CircleHelp size={14} /> Pulse uses anonymized, aggregated campus signals. Your individual activity stays private.</div>
-  </div>;
-}
-
-function PostCard({ post, index, interested, setInterested }: { post: typeof posts[number]; index: number; interested: number[]; setInterested: (items: number[]) => void }) {
-  const isInterested = interested.includes(index);
-  const specificationTags = Array.from(new Set([...post.tags, ...post.skills_required]));
-  const sharePost = () => {
-    const shareData = { title: post.title, text: post.body, url: window.location.href };
-    if (navigator.share) {
-      navigator.share(shareData).catch(() => undefined);
-      return;
-    }
-    navigator.clipboard?.writeText(window.location.href);
-    toast("Post link copied for sharing.");
-  };
-  return <article className="post-card"><div className={`post-avatar ${post.color}`}>{post.initials}</div><div className="post-main"><div className="post-meta"><b>{post.name}</b><span>{post.meta}</span><button onClick={() => toast(`More options for ${post.title}`)} aria-label={`More options for ${post.title}`}><MoreHorizontal size={17} /></button></div><h3>{post.title}</h3><p>{post.body}</p><div className="tag-row">{specificationTags.map((tag) => <span key={tag} className={post.skills_required.includes(tag) ? "skill-tag" : ""}>#{tag}</span>)}</div><div className="post-deadline"><span>Deadline · {new Date(`${post.deadline}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span></div><div className="post-actions"><button className={`interested-action ${isInterested ? "is-interested" : ""}`} onClick={() => setInterested(isInterested ? interested.filter((x) => x !== index) : [...interested, index])}><Sparkles size={16} fill={isInterested ? "currentColor" : "none"} /> {isInterested ? "Interested" : "Interested?"}</button><button className="share-action" onClick={sharePost} aria-label={`Share ${post.title}`}> <Share2 size={15} /> Share</button ></div ></div ></article >;
-}
-
 function ResourcesView({ setActiveTab, onUploadResource }: { setActiveTab: (id: string) => void; onUploadResource: () => void }) { const [resourceQuery, setResourceQuery] = useState(""); const [isStudyStack, setIsStudyStack] = useState(false); const [yearFilter, setYearFilter] = useState("All years"); const [typeFilter, setTypeFilter] = useState("All types"); const filteredResources = resources.filter((resource) => { const searchable = `${ resource.subject } ${ resource.title } ${ resource.meta }`.toLowerCase(); const matchesQuery = searchable.includes(resourceQuery.toLowerCase().trim()); const matchesYear = yearFilter === "All years" || resource.year === yearFilter; const matchesType = typeFilter === "All types" || resource.type === typeFilter; return matchesQuery && matchesYear && matchesType; }); return <div className="page-content"><PageTitle kicker="KNOWLEDGE LIBRARY" title="Notes, PYQs, and the good stuff." description="A browsable shelf for the things that help you learn faster — and ask better questions." action="Upload a resource" onAction={onUploadResource} />{isStudyStack && <button className="profile-back resource-stack-back" onClick={() => { setIsStudyStack(false); setTypeFilter("All types"); }}><ArrowLeft size={16} /> Back to all Notes & PYQs</button>}<div className="resource-toolbar"><div className="search-field"><Search size={17} /><input value={resourceQuery} onChange={(e) => setResourceQuery(e.target.value)} placeholder="Search subjects, units, or keywords..." /></div><label className="filter-control"><span>Year of study</span><select value={yearFilter} onChange={(e) => setYearFilter(e.target.value)}><option>All years</option><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option></select></label><label className="filter-control"><span>Type</span><select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}><option>All types</option><option>PYQ</option><option>NOTES</option></select></label></div><div className="resource-feature"><div><span className="section-kicker">GENIE'S PICK FOR YOU</span><h2>A study stack worth keeping close.</h2><p>Based on what you’ve saved and your Year of study roadmap.</p><button className="primary-button" onClick={() => { setTypeFilter("PYQ"); setIsStudyStack(true); toast("Study stack opened with PYQs."); }}><Play size={15} /> Open study stack</button></div><div className="resource-feature-art"><img src="/manus-storage/campus-genie-notes-visual_d047909b.png" alt="Open notebooks and study papers on a warm campus desk" /><span className="art-label">NOTES · PYQs · SHARED</span></div></div><div className="resource-grid">{filteredResources.map((resource) => <div className="resource-card" key={resource.title}><div className={`resource-badge ${resource.tone}`}>{resource.type}</div><span className="resource-subject">{resource.subject}</span><h3>{resource.title}</h3><span className="resource-meta">{resource.meta}</span><div className="resource-footer"><button onClick={() => toast(`${resource.title} saved to your shelf.`)}><Download size={15} /> Save</button><button className="ask-small" onClick={() => setActiveTab("genie")}><Sparkles size={14} /> Ask Genie</button></div></div>) }</div ></div > }
-
-function CommunityView({ setActiveTab, interested, setInterested, onCreatePost }: { setActiveTab: (id: string) => void; interested: number[]; setInterested: (items: number[]) => void; onCreatePost: () => void }) { const [activeFilter, setActiveFilter] = useState("For you"); const allCommunityPosts = posts.concat(posts[0]); const filteredPosts = activeFilter === "For you" ? allCommunityPosts : allCommunityPosts.filter((post) => { const haystack = `${ post.title } ${ post.body } ${ post.tags.join(" ") }`.toLowerCase(); if (activeFilter === "Hackathons") return haystack.includes("hackathon"); if (activeFilter === "Clubs") return haystack.includes("club") || haystack.includes("volunteer"); if (activeFilter === "Research") return haystack.includes("research"); return haystack.includes("teammate") || haystack.includes("volunteer"); }); return <div className="page-content community-page"><div className="community-hero"><div className="community-hero-copy"><div className="eyebrow"><span className="eyebrow-pin">✦</span> THE QUAD, ONLINE · LIVE</div><h1>Find your<br /><em>people.</em></h1><p>Big ideas, last-minute teams, club chaos, and the small moments that make campus feel like yours.</p><button className="primary-button" onClick={onCreatePost}><Plus size={15} /> Drop something into the quad</button></div><div className="community-orbit"><div className="orbit-ring ring-one" /><div className="orbit-ring ring-two" /><div className="orbit-center"><UsersRound size={23} /><b>1,248</b><small>students around</small></div><span className="orbit-bubble bubble-one">need a teammate</span><span className="orbit-bubble bubble-two">club night ↑</span><span className="orbit-bubble bubble-three">☻ 42 online</span></div></div><div className="campus-marquee" aria-label="Live campus activity"><div className="campus-marquee-track"><div className="marquee-set"><span>✦ PHASE SHIFT VOLUNTEERS</span><i>·</i><span>AI HACKATHON CREWS</span><i>·</i><span>PHOTOGRAPHY CLUB OPEN CALL</span><i>·</i><span>RESEARCH PARTNERS WANTED</span><i>·</i><span>✦ PHASE SHIFT VOLUNTEERS</span></div><div className="marquee-set" aria-hidden="true"><span>✦ PHASE SHIFT VOLUNTEERS</span><i>·</i><span>AI HACKATHON CREWS</span><i>·</i><span>PHOTOGRAPHY CLUB OPEN CALL</span><i>·</i><span>RESEARCH PARTNERS WANTED</span><i>·</i><span>✦ PHASE SHIFT VOLUNTEERS</span></div></div></div><div className="community-layout"><div><div className="community-filters">{["For you", "Hackathons", "Clubs", "Research", "Opportunities"].map((filter) => <button key={filter} className={activeFilter === filter ? "active" : ""} onClick={() => setActiveFilter(filter)}>{filter}</button>)}<button className="community-create-link" onClick={onCreatePost}><Plus size={14} /> Create a post</button></div>{filteredPosts.length ? filteredPosts.map((post, i) => <PostCard key={`${post.name}-${i}`} post={post} index={i} interested={interested} setInterested={setInterested} />) : <div className="empty-state"><b>No posts in this lane yet.</b><span>Try another community filter or check back soon.</span></div>}</div></div></div> }
-
-
-function PulseView({ onCommunity }: { onCommunity: () => void }) { return <div className="page-content pulse-page" onClick={onCommunity}><div className="pulse-mode-banner"><div className="pulse-mode-icon"><Zap size={18} /></div><div><span className="section-kicker">YOU ARE IN A LIVE CAMPUS MODE</span><b>Campus Pulse</b></div><span className="pulse-mode-status"><i className="live-dot" /> updating from the last 24 hours</span></div><section className="pulse-stage"><div className="pulse-stage-copy"><div className="live-label"><i className="live-dot" /> CAMPUS SIGNALS · LIVE</div><h1>Feel the<br /><em>campus energy.</em></h1><p>Not a leaderboard. Not surveillance. Just a living snapshot of what BMSCE is curious about, joining, making, and talking about right now.</p><div className="pulse-stat-row"><div><b>72</b><span>mood index</span></div><div><b>+34%</b><span>AI curiosity</span></div><div><b>1.2k</b><span>signals today</span></div></div></div><div className="signal-field"><div className="field-grid" /><div className="field-core"><span className="core-glow" /><b>72</b><small>campus mood</small></div><div className="signal-node node-ai"><Sparkles size={13} /><span>AI & Data</span><b>rising</b></div><div className="signal-node node-club"><UsersRound size={13} /><span>Club life</span><b>active</b></div><div className="signal-node node-build"><Zap size={13} /><span>Build mode</span><b>+18%</b></div><div className="signal-node node-fest"><CalendarDays size={13} /><span>Fest season</span><b>soon</b></div><div className="signal-path path-one" /><div className="signal-path path-two" /></div><div className="pulse-stage-footer"><span><i className="live-dot" /> last refreshed 2 min ago</span><span>Tap a signal to explore</span></div></section><div className="pulse-section-intro"><div><span className="section-kicker">THE CAMPUS, IN MOTION</span><h2>What’s making waves</h2></div><span className="pulse-note">✦ anonymized signals, human stories</span></div><div className="pulse-story-grid"><article className="pulse-story story-orange"><span className="story-number">01</span><div className="story-icon"><Sparkles size={19} /></div><span className="section-kicker">CURIOUS MINDS</span><h3>AI events are having a moment.</h3><p>More students are saving workshops, hackathons, and project calls than usual.</p><div className="story-meter"><span style={{ width: "84%" }} /></div><b>84% energy</b></article><article className="pulse-story story-lilac"><span className="story-number">02</span><div className="story-icon"><UsersRound size={19} /></div><span className="section-kicker">THE SOCIAL CURRENT</span><h3>People are looking for people.</h3><p>Club joins, teammate posts, and “who’s going?” conversations are up across the quad.</p><div className="mini-avatar-stack"><i>AK</i><i>NS</i><i>SM</i><b>+ 42 around</b></div></article></div><div className="pulse-bottom-grid"><div className="pulse-rhythm"><div className="section-kicker">THE WEEK IN SHAPE</div><h3>Campus has a rhythm.</h3><div className="rhythm-bars">{[34, 46, 42, 58, 51, 72, 66, 83, 76, 91, 88, 96].map((v, i) => <i key={i} style={{ height: `${v}%` }}><span /></i>)}</div><div className="chart-labels"><span>MON</span><span>NOW</span></div></div></div></div > }
 
 function HistoryView({ setActiveTab }: { setActiveTab: (id: string) => void }) { const [activeYear, setActiveYear] = useState("2023"); return <div className="page-content history-page"><div className="history-hero"><div className="history-copy"><span className="section-kicker">TIME CAPSULE · BMSCE ARCHIVES</span><h1>Campus has a<br /><em>long memory.</em></h1><p>Ask how the culture evolved. Explore old events, alumni paths, and the ideas that were already in the air three years ago.</p><button className="primary-button" onClick={() => setActiveTab("genie")}><History size={15} /> Explore with Genie <ArrowUpRight size={15} /></button></div><div className="history-stamp">EST.<br /><b>1946</b><span>BENGALURU</span></div></div><div className="history-controls"><div><span className="section-kicker">BROWSE THE YEARS</span><h2>Choose a thread to follow</h2></div><div className="year-pills">{["2026", "2024", "2023", "2020", "2016"].map((year) => <button key={year} className={activeYear === year ? "active" : ""} onClick={() => { setActiveYear(year); toast(`Archive thread switched to ${year}.`); }}>{year}</button>)}</div></div><div className="history-grid"><div className="history-story story-large"><div className="story-image image-campus" /><div className="story-copy"><span className="section-kicker">CAMPUS LIFE · 2023</span><h3>When the quad became a stage.</h3><p>From club showcases to late-evening rehearsals, a snapshot of the moments students made between classes.</p><button onClick={() => toast(`Opening the ${activeYear} archive memory.`)}>Open memory <ArrowUpRight size={14} /></button></div></div><div className="history-story"><div className="story-image image-hack" /><div className="story-copy"><span className="section-kicker">HACKATHONS · 2023</span><h3>Before the pitch decks.</h3><button onClick={() => toast(`Opening the ${activeYear} archive memory.`)}>Open memory <ArrowUpRight size={14} /></button></div></div > <div className="history-story note-story"><div className="note-pin">✦</div><span className="section-kicker">ASK THE ARCHIVE</span><h3>“What did students care about back then?”</h3><button onClick={() => setActiveTab("genie")}>Ask Genie <ArrowUpRight size={14} /></button></div></div > <div className="source-note">Archive inspiration: public campus-life references from <a href="https://bmsce.ac.in/home/Life-at-BMSCE" target="_blank" rel="noreferrer">BMSCE Life at BMSCE</a>.</div></div > }
 
@@ -649,12 +588,28 @@ function ResourceUploadView({ onBack }: { onBack: () => void }) {
     if (!file) return;
 
     const payload = new FormData();
-    const signedInUser = currentUser();
-    if (!accessToken() || !signedInUser?.student_id) {
-      setUploadStatus({ type: "error", message: "Please sign in before uploading." });
+   const signedInUser = currentUser();
+
+    console.log("SIGNED IN USER:", signedInUser);
+    console.log("ACCESS TOKEN:", accessToken());
+
+    if (!accessToken()) {
+      setUploadStatus({
+        type: "error",
+        message: "Please sign in before uploading."
+      });
       return;
     }
-    payload.append("student_id", signedInUser.student_id);
+
+    if (!signedInUser?.email) {
+      setUploadStatus({
+        type: "error",
+        message: "Your email was not found in the login session. Please sign out and log in again."
+      });
+      return;
+    }
+
+    payload.append("email", signedInUser.email);
     payload.append("title", title);
     payload.append("resource_type", resourceType);
     payload.append("subject", subject);
@@ -666,6 +621,10 @@ function ResourceUploadView({ onBack }: { onBack: () => void }) {
     setIsUploading(true);
     try {
       const backendUrl = (import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000").replace(/\/$/, "");
+      console.log("UPLOAD EMAIL:", signedInUser.email);
+      console.log("UPLOAD FILE:", file.name);
+      console.log("API URL:", backendUrl);
+
       const response = await fetch(`${backendUrl}/api/resources/upload`, {
         method: "POST", body: payload,
         headers: { Authorization: `Bearer ${accessToken()}` },

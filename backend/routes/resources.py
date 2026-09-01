@@ -25,7 +25,7 @@ VOLUME_PATH = os.getenv(
 
 @router.post("/upload")
 def upload_resource(
-    student_id: str = Form(...),
+    email: str = Form(...),
     title: str = Form(...),
     resource_type: str = Form(...),
     subject: str = Form(...),
@@ -73,9 +73,9 @@ def upload_resource(
                 """
                 SELECT user_id
                 FROM student_public
-                WHERE student_id = %s
+                WHERE email = %s
                 """,
-                (student_id,)
+                (email,)
             )
 
             student = cur.fetchone()

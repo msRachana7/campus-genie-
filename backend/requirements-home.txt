@@ -1,0 +1,7 @@
+# Add alongside your existing requirements, using the same virtual environment.
+fastapi>=0.115,<1
+requests>=2.32,<3
+databricks-sdk>=0.40,<1
+psycopg[binary]>=3.2,<4
+python-dotenv>=1,<2
+tzdata>=2025.1

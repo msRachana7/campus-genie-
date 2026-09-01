@@ -84,7 +84,7 @@ def limit_attempts(request, email):
 
 
 def account(cur, email):
-    cur.execute("""SELECT pr.user_id, pr.usn, pr.email, pr.password_hash, p.student_id
+    cur.execute("""SELECT pr.user_id, pr.usn, pr.email, pr.password_hash, p.email AS public_email
                    FROM student_private pr JOIN student_public p ON p.user_id=pr.user_id
                    WHERE lower(trim(pr.email))=%s""", (email,))
     return cur.fetchone()
@@ -92,7 +92,7 @@ def account(cur, email):
 
 def session_result(user):
     return {"access_token": access_token(user), "token_type": "bearer", "user": {
-        "user_id": str(user["user_id"]), "student_id": user["student_id"],
+        "user_id": str(user["user_id"]), 
         "email": user["email"], "usn": user["usn"],
     }}
 
@@ -106,7 +106,7 @@ def check_available(cur, email, usn):
     if cur.fetchone():
         # Without mailbox verification, a signup cannot claim a preloaded identity.
         raise HTTPException(409, "This email or USN already exists. Sign in if you registered it. For an unregistered sample record, ask the administrator to resolve the conflict; registration will not overwrite it.")
-    cur.execute("SELECT 1 FROM student_public WHERE lower(trim(student_id))=%s", (email,))
+    cur.execute("SELECT 1 FROM student_public WHERE lower(trim(email))=%s", (email,))
     if cur.fetchone():
         raise HTTPException(409, "An existing profile uses this email. Ask the administrator to check it.")
 
@@ -115,7 +115,7 @@ def create_account(conn, cur, data, encoded_password):
     schema = check_schema(conn)
     now = datetime.now(timezone.utc)
     user_id = uuid.uuid4()
-    public = {"user_id": user_id, "student_id": str(data.email), "name": data.name,
+    public = {"user_id": user_id, "email": str(data.email), "name": data.name,
               "department": data.department, "year_of_study": data.year_of_study}
     for field in ("skills", "interests", "looking_for"):
         public[field] = adapt_list([], schema["student_public"][field])
@@ -137,7 +137,7 @@ def create_account(conn, cur, data, encoded_password):
         cur.execute(sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
             sql.Identifier(table), sql.SQL(",").join(map(sql.Identifier, values)),
             sql.SQL(",").join(sql.Placeholder() for _ in values)), tuple(values.values()))
-    return {**private, "student_id": str(data.email)}
+    return {**private, "email": str(data.email)}
 
 
 @router.post("/register", status_code=201)
@@ -175,5 +175,5 @@ def me(user: Annotated[dict, Depends(require_user)]):
         current = account(cur, user["email"].strip().lower())
     if not current:
         raise HTTPException(401, "Your account has no profile. Please contact the administrator.")
-    return {"user": {"user_id": str(current["user_id"]), "student_id": current["student_id"],
+    return {"user": {"user_id": str(current["user_id"]), 
                      "email": current["email"], "usn": current["usn"]}}
