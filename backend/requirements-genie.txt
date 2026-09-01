@@ -1,0 +1,8 @@
+# Install alongside your existing requirements.txt; do not replace it.
+openai>=1.66,<3
+python-dotenv>=1,<2
+python-jose[cryptography]>=3.4,<4
+# Already imported by the supplied authentication route but missing from its
+# pasted requirements list:
+bcrypt>=4,<6
+email-validator>=2,<3

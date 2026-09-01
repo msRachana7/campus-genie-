@@ -1,0 +1,20 @@
+/* Small additions to the existing campus theme, not a replacement stylesheet. */
+.genie-page .genie-answer { min-width: 0; max-width: 100%; }
+.genie-page .genie-markdown { overflow-x: auto; overflow-wrap: anywhere; }
+.genie-page .genie-markdown > :first-child { margin-top: 0; }
+.genie-page .genie-markdown > :last-child { margin-bottom: 0; }
+.genie-page .genie-markdown ul,
+.genie-page .genie-markdown ol { margin: .6rem 0; padding-left: 1.4rem; }
+.genie-page .genie-markdown ul { list-style: disc; }
+.genie-page .genie-markdown ol { list-style: decimal; }
+.genie-page .genie-markdown pre { white-space: pre-wrap; padding: .6rem; background: #edf3e9; border-radius: 8px; }
+.genie-page .genie-markdown table { border-collapse: collapse; font-size: .85rem; }
+.genie-page .genie-markdown th,
+.genie-page .genie-markdown td { padding: .4rem .6rem; border: 1px solid #ddd9ce; text-align: left; }
+.genie-page .genie-markdown a,
+.genie-page .genie-sources a { color: #184c40; text-decoration: underline; }
+.genie-page .genie-sources { margin-top: .6rem; font-size: .8rem; }
+.genie-page .genie-sources ul { padding-left: 1.2rem; list-style: disc; }
+.genie-page .genie-chat-error { color: #9c2525; background: #fff0ee; border-radius: 8px; padding: .75rem; font-size: .85rem; }
+.genie-page button:disabled { opacity: .55; cursor: not-allowed; }
+.genie-page .chat-input input { min-width: 0; flex: 1; }

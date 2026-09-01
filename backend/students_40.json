@@ -1,0 +1,779 @@
+[
+  {
+    "student_id": "S001",
+    "name": "Priya",
+    "year": 2,
+    "department": "AIDS",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Hackathons",
+      "Research"
+    ],
+    "usn": "1BM26AI001"
+  },
+  {
+    "student_id": "S002",
+    "name": "Aarav",
+    "year": 3,
+    "department": "CSE",
+    "skills": [
+      "DSA",
+      "Java"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Project Teammates",
+      "Internships"
+    ],
+    "usn": "1BM26AI002"
+  },
+  {
+    "student_id": "S003",
+    "name": "Nandini",
+    "year": 1,
+    "department": "ECE",
+    "skills": [
+      "CSS",
+      "Java"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Clubs",
+      "Mentorship"
+    ],
+    "usn": "1BM26AI003"
+  },
+  {
+    "student_id": "S004",
+    "name": "Rohan",
+    "year": 4,
+    "department": "ISE",
+    "skills": [
+      "CSS",
+      "Java"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Hackathons",
+      "Co-founders"
+    ],
+    "usn": "1BM26AI004"
+  },
+  {
+    "student_id": "S005",
+    "name": "Ananya",
+    "year": 2,
+    "department": "CSE DS",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Research",
+      "Study Partners"
+    ],
+    "usn": "1BM26AI005"
+  },
+  {
+    "student_id": "S006",
+    "name": "Vikram",
+    "year": 3,
+    "department": "EEE",
+    "skills": [
+      "Java",
+      "Python"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Projects",
+      "Technical Clubs"
+    ],
+    "usn": "1BM26AI006"
+  },
+  {
+    "student_id": "S007",
+    "name": "Meera",
+    "year": 1,
+    "department": "CSE BS",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Design Communities",
+      "Hackathons"
+    ],
+    "usn": "1BM26AI007"
+  },
+  {
+    "student_id": "S008",
+    "name": "Aditya",
+    "year": 4,
+    "department": "Mechanical",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Research",
+      "Industry Projects"
+    ],
+    "usn": "1BM26AI008"
+  },
+  {
+    "student_id": "S009",
+    "name": "Ishita",
+    "year": 2,
+    "department": "CSE ICB",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Research",
+      "Hackathons"
+    ],
+    "usn": "1BM26AI009"
+  },
+  {
+    "student_id": "S010",
+    "name": "Karthik",
+    "year": 3,
+    "department": "Civil",
+    "skills": [
+      "CSS",
+      "DSA"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Competitions",
+      "Project Teammates"
+    ],
+    "usn": "1BM26AI010"
+  },
+  {
+    "student_id": "S011",
+    "name": "Sneha",
+    "year": 1,
+    "department": "Chemical",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Clubs",
+      "Study Partners"
+    ],
+    "usn": "1BM26AI011"
+  },
+  {
+    "student_id": "S012",
+    "name": "Arjun",
+    "year": 4,
+    "department": "Industrial Engineering",
+    "skills": [
+      "DSA",
+      "Python"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Internships",
+      "Industry Projects"
+    ],
+    "usn": "1BM26AI012"
+  },
+  {
+    "student_id": "S013",
+    "name": "Sahana",
+    "year": 3,
+    "department": "AIDS",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Research",
+      "Hackathons"
+    ],
+    "usn": "1BM26AI013"
+  },
+  {
+    "student_id": "S014",
+    "name": "Dev",
+    "year": 2,
+    "department": "CSE",
+    "skills": [
+      "DSA",
+      "Java"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Coding Groups",
+      "Contests"
+    ],
+    "usn": "1BM26AI014"
+  },
+  {
+    "student_id": "S015",
+    "name": "Kavya",
+    "year": 4,
+    "department": "ECE",
+    "skills": [
+      "CSS",
+      "Java"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Research",
+      "Internships"
+    ],
+    "usn": "1BM26AI015"
+  },
+  {
+    "student_id": "S016",
+    "name": "Rahul",
+    "year": 1,
+    "department": "CSE DS",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Mentorship",
+      "Study Partners"
+    ],
+    "usn": "1BM26AI016"
+  },
+  {
+    "student_id": "S017",
+    "name": "Divya",
+    "year": 3,
+    "department": "CSE BS",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Startups",
+      "Project Teammates"
+    ],
+    "usn": "1BM26AI017"
+  },
+  {
+    "student_id": "S018",
+    "name": "Manoj",
+    "year": 2,
+    "department": "EEE",
+    "skills": [
+      "CSS",
+      "Java"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Technical Clubs",
+      "Projects"
+    ],
+    "usn": "1BM26AI018"
+  },
+  {
+    "student_id": "S019",
+    "name": "Aditi",
+    "year": 4,
+    "department": "CSE ICB",
+    "skills": [
+      "Java"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Hackathons",
+      "Co-founders"
+    ],
+    "usn": "1BM26AI019"
+  },
+  {
+    "student_id": "S020",
+    "name": "Harsh",
+    "year": 3,
+    "department": "Mechanical",
+    "skills": [
+      "CSS",
+      "Python"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Industry Projects",
+      "Internships"
+    ],
+    "usn": "1BM26AI020"
+  },
+  {
+    "student_id": "S021",
+    "name": "Neha",
+    "year": 2,
+    "department": "Civil",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Research",
+      "Clubs"
+    ],
+    "usn": "1BM26AI021"
+  },
+  {
+    "student_id": "S022",
+    "name": "Yash",
+    "year": 1,
+    "department": "Chemical",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Research",
+      "Mentorship"
+    ],
+    "usn": "1BM26AI022"
+  },
+  {
+    "student_id": "S023",
+    "name": "Pooja",
+    "year": 4,
+    "department": "Industrial Engineering",
+    "skills": [
+      "CSS",
+      "DSA"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Internships",
+      "Research"
+    ],
+    "usn": "1BM26AI023"
+  },
+  {
+    "student_id": "S024",
+    "name": "Abhishek",
+    "year": 3,
+    "department": "AIDS",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Hackathons",
+      "Research"
+    ],
+    "usn": "1BM26AI024"
+  },
+  {
+    "student_id": "S025",
+    "name": "Lakshmi",
+    "year": 2,
+    "department": "CSE",
+    "skills": [
+      "Java"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Project Teammates",
+      "Coding Groups"
+    ],
+    "usn": "1BM26AI025"
+  },
+  {
+    "student_id": "S026",
+    "name": "Nikhil",
+    "year": 4,
+    "department": "ECE",
+    "skills": [
+      "DSA",
+      "Java"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Industry Projects",
+      "Research"
+    ],
+    "usn": "1BM26AI026"
+  },
+  {
+    "student_id": "S027",
+    "name": "Tanvi",
+    "year": 1,
+    "department": "CSE DS",
+    "skills": [
+      "CSS",
+      "Python"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Study Partners",
+      "Clubs"
+    ],
+    "usn": "1BM26AI027"
+  },
+  {
+    "student_id": "S028",
+    "name": "Siddharth",
+    "year": 3,
+    "department": "CSE BS",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Startups",
+      "Hackathons"
+    ],
+    "usn": "1BM26AI028"
+  },
+  {
+    "student_id": "S029",
+    "name": "Riya",
+    "year": 2,
+    "department": "EEE",
+    "skills": [
+      "CSS",
+      "Python"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Research",
+      "Technical Clubs"
+    ],
+    "usn": "1BM26AI029"
+  },
+  {
+    "student_id": "S030",
+    "name": "Gaurav",
+    "year": 4,
+    "department": "CSE ICB",
+    "skills": [
+      "Java"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Internships",
+      "Project Teammates"
+    ],
+    "usn": "1BM26AI030"
+  },
+  {
+    "student_id": "S031",
+    "name": "Shreya",
+    "year": 3,
+    "department": "Mechanical",
+    "skills": [
+      "CSS",
+      "DSA"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Research",
+      "Competitions"
+    ],
+    "usn": "1BM26AI031"
+  },
+  {
+    "student_id": "S032",
+    "name": "Vivek",
+    "year": 1,
+    "department": "Civil",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Clubs",
+      "Mentorship"
+    ],
+    "usn": "1BM26AI032"
+  },
+  {
+    "student_id": "S033",
+    "name": "Manya",
+    "year": 2,
+    "department": "Chemical",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Research",
+      "Study Partners"
+    ],
+    "usn": "1BM26AI033"
+  },
+  {
+    "student_id": "S034",
+    "name": "Ritesh",
+    "year": 3,
+    "department": "Industrial Engineering",
+    "skills": [
+      "DSA",
+      "Python"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Internships",
+      "Industry Projects"
+    ],
+    "usn": "1BM26AI034"
+  },
+  {
+    "student_id": "S035",
+    "name": "Aishwarya",
+    "year": 4,
+    "department": "AIDS",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Research",
+      "Mentorship"
+    ],
+    "usn": "1BM26AI035"
+  },
+  {
+    "student_id": "S036",
+    "name": "Kiran",
+    "year": 2,
+    "department": "CSE",
+    "skills": [
+      "DSA",
+      "Java"
+    ],
+    "interests": [
+      "AI",
+      "ML",
+      "Hackathon"
+    ],
+    "looking_for": [
+      "Open Source",
+      "Coding Groups"
+    ],
+    "usn": "1BM26AI036"
+  },
+  {
+    "student_id": "S037",
+    "name": "Bhavana",
+    "year": 1,
+    "department": "ECE",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "Hackathon",
+      "Technical Talks",
+      "Research"
+    ],
+    "looking_for": [
+      "Clubs",
+      "Hackathons"
+    ],
+    "usn": "1BM26AI037"
+  },
+  {
+    "student_id": "S038",
+    "name": "Sanjay",
+    "year": 4,
+    "department": "CSE DS",
+    "skills": [
+      "Python"
+    ],
+    "interests": [
+      "AI",
+      "Research",
+      "Technical Talks"
+    ],
+    "looking_for": [
+      "Research",
+      "Internships"
+    ],
+    "usn": "1BM26AI038"
+  },
+  {
+    "student_id": "S039",
+    "name": "Sowmya",
+    "year": 3,
+    "department": "CSE BS",
+    "skills": [
+      "CSS"
+    ],
+    "interests": [
+      "ML",
+      "AI",
+      "Research"
+    ],
+    "looking_for": [
+      "Clubs",
+      "Project Teammates"
+    ],
+    "usn": "1BM26AI039"
+  },
+  {
+    "student_id": "S040",
+    "name": "Varun",
+    "year": 2,
+    "department": "CSE ICB",
+    "skills": [
+      "Java"
+    ],
+    "interests": [
+      "Technical Talks",
+      "Hackathon",
+      "AI"
+    ],
+    "looking_for": [
+      "Project Teammates",
+      "Internships"
+    ],
+    "usn": "1BM26AI040"
+  }
+]
