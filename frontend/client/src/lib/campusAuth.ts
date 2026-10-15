@@ -13,16 +13,17 @@ export function accessToken(): string | null {
 }
 
 export function currentUser(): CampusUser | null {
-  try { return JSON.parse(sessionStorage.getItem("campus_genie_user") ?? "null"); }
-  catch { return null; }
+  try {
+    return JSON.parse(sessionStorage.getItem("campus_genie_user") ?? "null");
+  } catch {
+    return null;
+  }
 }
 
 export function saveSession(token: string, user: CampusUser) {
   sessionStorage.setItem(TOKEN_KEY, token);
   sessionStorage.setItem("campus_genie_user", JSON.stringify(user));
-  // Keep existing screens that read the user object compatible.
   localStorage.setItem("user", JSON.stringify(user));
-  // Remove tokens written by the old login form. New tokens live per-tab.
   localStorage.removeItem("access_token");
   window.dispatchEvent(new Event(AUTH_EVENT));
 }
@@ -35,29 +36,49 @@ export function clearSession() {
   window.dispatchEvent(new Event(AUTH_EVENT));
 }
 
-export async function authFetch<T = any>(path: string, options: RequestInit = {}): Promise<T> {
-  const base = (import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000").replace(/\/$/, "");
+export async function authFetch<T = unknown>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const base = (
+    import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000"
+  ).replace(/\/$/, "");
   const headers = new Headers(options.headers);
-  if (options.body && !(options.body instanceof FormData)) headers.set("Content-Type", "application/json");
+  if (options.body && !(options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
   const token = accessToken();
   if (token) headers.set("Authorization", `Bearer ${token}`);
+
   const controller = new AbortController();
   const timer = window.setTimeout(() => controller.abort(), 45000);
   let response: Response;
   try {
-    response = await fetch(`${base}${path}`, { ...options, headers, signal: options.signal ?? controller.signal });
+    response = await fetch(`${base}${path}`, {
+      ...options,
+      headers,
+      signal: options.signal ?? controller.signal,
+    });
   } catch (error) {
-    if (error instanceof Error && error.name === "AbortError") throw new Error("The server took too long. Please try again.");
-    throw new Error("Cannot reach the backend. Check that FastAPI is running on the configured backend URL.");
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error("The server took too long. Please try again.");
+    }
+    throw new Error(
+      "Cannot reach the backend. Check that FastAPI is running on the configured backend URL.",
+    );
   } finally {
     window.clearTimeout(timer);
   }
+
   const data = await response.json().catch(() => null);
   if (!response.ok) {
     if (response.status === 401 && path !== "/api/auth/login") clearSession();
-    const detail = typeof data?.detail === "string" ? data.detail
-      : Array.isArray(data?.detail) ? data.detail.map((item: { msg: string }) => item.msg).join(" ")
-      : `Request failed (${response.status}).`;
+    const detail =
+      typeof data?.detail === "string"
+        ? data.detail
+        : Array.isArray(data?.detail)
+          ? data.detail.map((item: { msg: string }) => item.msg).join(" ")
+          : `Request failed (${response.status}).`;
     throw new Error(detail);
   }
   return data as T;

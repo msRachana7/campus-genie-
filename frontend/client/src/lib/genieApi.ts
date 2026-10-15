@@ -8,7 +8,6 @@ export type ChatMessage = HistoryMessage & {
 const TOKEN_KEY = "campus_genie_access_token";
 export const GENIE_AUTH_EVENT = "campus-genie-auth-change";
 
-// This is your app's login JWT, NOT the Databricks token.
 export function saveGenieAccessToken(token: string | null) {
   if (token) sessionStorage.setItem(TOKEN_KEY, token);
   else sessionStorage.removeItem(TOKEN_KEY);
@@ -24,8 +23,9 @@ export async function requestGenie(
   token: string,
   signal: AbortSignal,
 ): Promise<{ answer: string; citations: Citation[] }> {
-  // Only a public backend URL is allowed in a VITE_ variable.
-  const base = (import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000").replace(/\/$/, "");
+  const base = (
+    import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000"
+  ).replace(/\/$/, "");
   const response = await fetch(`${base}/api/genie/chat`, {
     method: "POST",
     headers: {
@@ -49,5 +49,8 @@ export async function requestGenie(
   if (typeof body?.answer !== "string" || !body.answer.trim()) {
     throw new Error("Genie returned an empty answer. Please try again.");
   }
-  return { answer: body.answer, citations: Array.isArray(body.citations) ? body.citations : [] };
+  return {
+    answer: body.answer,
+    citations: Array.isArray(body.citations) ? body.citations : [],
+  };
 }

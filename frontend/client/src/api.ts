@@ -1,4 +1,7 @@
-const API_URL = "http://127.0.0.1:8000";
+export const API_URL = (
+    import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000"
+).replace(/\/$/, "");
+
 const API = {
     login: `${API_URL}/api/auth/login`,
     register: `${API_URL}/api/auth/register`,
@@ -13,13 +16,11 @@ export async function apiFetch(
     options: RequestInit = {}
 ) {
     const token = localStorage.getItem("access_token");
-
     const headers = new Headers(options.headers);
 
     if (!(options.body instanceof FormData)) {
         headers.set("Content-Type", "application/json");
     }
-
     if (token) {
         headers.set("Authorization", `Bearer ${token}`);
     }
@@ -31,23 +32,18 @@ export async function apiFetch(
 
     if (!response.ok) {
         const errorText = await response.text();
-
         let errorMessage = `API error: ${response.status}`;
 
         try {
             const errorData = JSON.parse(errorText);
-
             if (typeof errorData.detail === "string") {
                 errorMessage = errorData.detail;
             } else if (errorData.detail) {
                 errorMessage = JSON.stringify(errorData.detail);
             }
         } catch {
-            if (errorText) {
-                errorMessage = errorText;
-            }
+            if (errorText) errorMessage = errorText;
         }
-
         throw new Error(errorMessage);
     }
 

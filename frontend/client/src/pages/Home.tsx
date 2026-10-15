@@ -1,6 +1,6 @@
 /* Orchard Commons: warm editorial campus bulletin board with tactile cards, asymmetric discovery, and warm intelligence. */
 import { useEffect, useMemo, useState } from "react";
-import { authFetch as apiFetch, accessToken, AUTH_EVENT, clearSession, currentUser, saveSession } from "../lib/campusAuth";
+import { authFetch as apiFetch, accessToken, AUTH_EVENT, clearSession, currentUser, saveSession, type CampusUser } from "../lib/campusAuth";
 import CampusLogin from "../components/CampusLogin";
 import ConnectedGenieView from "../components/GenieView";
 import { useGenieChat } from "../hooks/useGenieChat";
@@ -130,7 +130,7 @@ useEffect(() => {
     setCheckingSession(false);
     return;
   }
-  apiFetch("/api/auth/me")
+  apiFetch<{ user: CampusUser }>("/api/auth/me")
     .then((data) => {
       if (!cancelled) {
         const token = accessToken();
@@ -440,7 +440,7 @@ function EditProfileView({
     setSaveError("");
 
     try {
-      const data = await apiFetch("/api/profile/me", {
+      const data = await apiFetch<{ profile: Record<string, unknown> }>("/api/profile/me", {
         method: "PUT",
         body: JSON.stringify({
           name,

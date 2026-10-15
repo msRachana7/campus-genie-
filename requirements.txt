@@ -1,0 +1,3 @@
+-r backend/requirements.txt
+-r backend/requirements-genie.txt
+-r backend/requirements-home.txt
